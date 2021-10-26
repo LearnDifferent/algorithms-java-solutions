@@ -1,6 +1,8 @@
 /**
  * 76. Minimum Window Substring:
  * 最小覆盖子串
+ * 
+ * 解决方法：滑动窗口
  *
  * Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
  *
