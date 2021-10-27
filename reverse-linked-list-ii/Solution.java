@@ -21,9 +21,11 @@ class Solution {
 		// 因为是从第二个节点开始反转，所以缩小的范围应该整体向前移动
 		// 可以理解为起始点向后移动了，所以保存原来的范围就需要让范围向前移动
         ListNode nextNodeAfterReversed = reverseBetween(head.next, left - 1, right - 1);
-        // 重新设置当前节点的下一个节点
+		// 因为 left != 1，所以当前第 1 个位置的 head 节点不需要反转
+		// 直接让 head 的 next 连接刚刚反转好的下一个节点即可
         head.next = nextNodeAfterReversed;
-        // 一直反转下一个，直到触发 base case
+		// 在 left != 1 的时候，将 head 之后的节点反转，反转后连接 head
+		// 最后返回 head 就可以了
         return head;
     }
 
@@ -41,14 +43,16 @@ class Solution {
             return head;
         }
 
-        // 递归下一个并获取反转后的返回值（注意是 n - 1）
+		// 当 n != 1 的时候，反转 head.next
         ListNode result = reverseFirstToN(head.next, n - 1);
-
-        // 因为下一个已经递归完成了，所以只要反转当前的节点的指针即可
+		// 在反转了 head.next 之后，head.next 就是目前最后一个节点
+		// 所以，需要让 head 变为“需要反转的最后一个节点”
+		// 也就是 head.next 的 next（下一个）节点指向 head
         head.next.next = head;
-        // 注意，这里表示指向最后一个节点的下一个节点（指向的 succ 节点不参与反转）
+		// 最后，让反转后的最后一个节点 head 的 next 指向后躯节点 succ 即可
         head.next = succ;
 
+		// 返回的是 result，因为 head 节点已经反转到 result 的最后了
         return result;
     }
 }
