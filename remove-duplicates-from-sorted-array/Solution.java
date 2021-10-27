@@ -1,7 +1,8 @@
 /**
  * 26. Remove Duplicates from Sorted Array:
  * 删除有序数组中的重复项
- * 解决方案：双指针 https://mp.weixin.qq.com/s/55UPwGL0-Vgdh8wUEPXpMQ
+ * 解决方案：双指针
+ * 【双指针技巧秒杀四道数组/链表题目 https://mp.weixin.qq.com/s/55UPwGL0-Vgdh8wUEPXpMQ】
  *
  * Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
  *
