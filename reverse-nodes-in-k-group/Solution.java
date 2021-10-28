@@ -1,6 +1,7 @@
 /**
  * 25. Reverse Nodes in k-Group:
  * K 个一组翻转链表
+ * 解决方案：递归
  *
  * Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
  *
@@ -18,8 +19,9 @@ class Solution {
             return head;
         }
 
-        ListNode firstNode = head;
+        // kPlus1Node 表示 k 个一组之后的那个节点
         ListNode kPlus1Node = head;
+        ListNode firstNode = head;
 
         // 循环 k 次，获取第 k + 1 个节点的值
         for (int i = 0; i < k; i++) {
@@ -31,33 +33,36 @@ class Solution {
             // 然后获取第 k + 1 个节点的值
             kPlus1Node = kPlus1Node.next;
         }
-        // 反转区间内的 k 个一组的节点
-        ListNode reversedKGroupNode = reverseBetween(firstNode, kPlus1Node);
-        // 递归，反转下一个 k 个一组
+        // 反转以 firstNode 开头，区间内的 k 个一组的节点
+        ListNode reversedNode = reverseBetween(firstNode, kPlus1Node);
+        // 递归当前方法，反转下一个 k 个一组
         ListNode reversedAfterFirstKGroup = reverseKGroup(kPlus1Node, k);
-        // 然后，让反转后的区间内的第一个节点，和这个递归后的结果相连接
+
+        // reversedNode 中最后一个节点 firstNode...
+        // （因为反转了，所以 firstNode 是最后一个节点，而 reversedNode 是反转后的第一个节点）...
+        // 的下一个节点，和递归反转的 reversedAfterFirstKGroup 相连接
         firstNode.next = reversedAfterFirstKGroup;
-        // 最后，返回反转后的结果
-        return reversedKGroupNode;
+        // 最后，返回反转后的第一个节点
+        return reversedNode;
     }
 
     /**
-     * 反转两个 ListNode 之间的节点。
-     * 注意1：这里第二个参数表示倒数第二个节点。
-     * 注意2: 根据题意，first 不会为 null
-     * 参考：206. Reverse Linked List
+     * 反转两个 ListNode 之间的节点（参考：206. Reverse Linked List）
+     * 注意，tail 不会被反转，也就是说，反转的是：[head, tail)
      */
-    ListNode reverseBetween(ListNode first, ListNode secondToLast) {
+    ListNode reverseBetween(ListNode head, ListNode tail) {
         ListNode previous = null;
-        ListNode current = first;
+        ListNode current = head;
 
-        while (current != secondToLast) {
+        while (current != tail) {
             ListNode temp = current;
             // current.next 可以换成 temp.next
             current = current.next;
             temp.next = previous;
             previous = temp;
         }
+        // 当 current 为 tail 的时候，退出循环
+        // 此时，tail 节点之前的节点全部反转了
         return previous;
     }
 }

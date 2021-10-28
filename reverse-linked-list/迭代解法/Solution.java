@@ -8,8 +8,12 @@
  *
  */
 class Solution {
+
     public ListNode reverseList(ListNode head) {
 
+		// 这个方法，相当于反转 [head, null)，左闭右开
+		// null 不会被反转，null 表示最后一个节点后面的节点
+		
 		// 如果当前节点是 null，也会直接返回 null
         ListNode previousNode = null;
         ListNode currentNode = head;
