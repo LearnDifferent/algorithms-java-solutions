@@ -32,7 +32,7 @@ class Solution {
             // needNum 表示当前 index 的数字，距离目标的数字相差的那个数字
             int needNum = target - nums[i];
             // 如果 needNum 存在，且不是 needNum 的位置不是当前的位置（即，不是当前数字）
-            if (map.containsKey(needNum) && i != map.get(needNum)) {
+            if (map.containsKey(needNum) && !map.get(needNum).equals(i)) {
                 return new int[]{i, map.get(needNum)};
             }
         }
