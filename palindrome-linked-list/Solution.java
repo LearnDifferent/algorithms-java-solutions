@@ -1,6 +1,8 @@
 /**
  * 234. Palindrome Linked List:
  * 回文链表
+ * 解决方案：1. 获取中间的节点 2. 反转从中间开始的节点 3. 用反转后的中间节点，和正常的节点相对比
+ *
  * Given the head of a singly linked list, return true if it is a palindrome.
  *
  * 链接：https://leetcode-cn.com/problems/palindrome-linked-list/
@@ -9,13 +11,13 @@ class Solution {
 
     public boolean isPalindrome(ListNode head) {
 
-        // 从头开始的节点
-        ListNode left = head;
-
-        // 中间的节点（如果是偶数，就是中间两个节点中，右边的那个）
+        // 获取中间的节点（如果是偶数，就是中间两个节点中，右边的那个）
         ListNode middle = findMiddle(head);
-        // 从中间开始反转的节点
+
+        // 反转中间开始的节点，保存为 right
         ListNode right = reverse(middle);
+        // 从头开始的节点保存为 left
+        ListNode left = head;
 
         // while 循环到 right 的结尾
         while (right != null) {
@@ -30,7 +32,7 @@ class Solution {
         return true;
     }
 
-    ListNode findMiddle(ListNode head) {
+    ListNode getMiddle(ListNode head) {
         ListNode fast = head;
         ListNode slow = head;
         while (fast != null && fast.next != null) {
@@ -41,14 +43,17 @@ class Solution {
         return slow;
     }
 
+    // 使用迭代法反转
     ListNode reverse(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
+        ListNode pre = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode tmp = cur;
+            cur = tmp.next;
+            tmp.next = pre;
+            pre = tmp;
         }
-        ListNode result = reverse(head.next);
-        head.next.next = head;
-        head.next = null;
-        return result;
+        return pre;
     }
 }
 
