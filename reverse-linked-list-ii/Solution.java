@@ -29,9 +29,7 @@ class Solution {
         return head;
     }
 
-    // 获取反转之后，最后一个节点后面的节点 successor
-	// 因为只是反转区间内的节点，反转了之后，
-	// 其最后一个节点还需要和 successor 相连接
+    // 获取反转之前，最后一个节点后面的节点 successor
     ListNode succ = null;
 
     // 反转第一个到第 N 个
