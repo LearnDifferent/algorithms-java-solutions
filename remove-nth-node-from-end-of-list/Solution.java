@@ -15,8 +15,8 @@ class Solution {
         // 要获取倒数第 1 个，也就是 3
         // 只需要让快指针先走 1 步，到 1 的位置，
         // 然后，快慢指针一起走，如下：
-        // fast: 1, 2, 3, null
-        // slow: 0, 1, 2, 3
+        // fast: 2, 3, null
+        // slow: 1, 2, 3
         // 此时，慢指针就指向倒数第 1 个，也就是 3 了
 
         ListNode fast = head;
@@ -33,6 +33,10 @@ class Solution {
             }
         }
 
+        // fast == null 的时候，slow 指针指向倒数第 n 个
+        // 但是，做剔除操作的时候，需要的是“倒数第 n 个”的前面一个节点
+        // 所以，判断条件为 fast.next != null
+        // 这样的话，slow 指向的就是“‘倒数第 n 个节点’前面的一个节点”
         while (fast.next != null) {
             fast = fast.next;
             slow = slow.next;
