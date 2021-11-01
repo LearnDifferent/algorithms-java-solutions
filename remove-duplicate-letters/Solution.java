@@ -25,8 +25,9 @@ class Solution {
 
     public String removeDuplicateLetters(String s) {
 
-        // Monotonic Stack（单调栈）
-        Stack<Character> stack = new Stack<>();
+//        Stack<Character> stack = new Stack<>();
+        // 除了使用 Stack 类，也可以使用 Deque，这道题的速度差不多：
+        Deque<Character> stack = new ArrayDeque<>();
 
         // 每个字符都可以转化为对应的数字，比如，获取字节 'a' 对应的数字：
         // char charA = 'a';int intA = charA; 然后打印 intA 就可以得到 'a' 的数字。

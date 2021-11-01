@@ -30,8 +30,11 @@ class Solution {
 
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
+        // 除了使用 Stack 类，也可以使用 Deque，这道题 Stack 好像还比较快
+//        Stack<Integer> stack = new Stack<>();
+
         // Monotonic Stack，按照 index 从小到大，存储 num2 的 index
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>()
         // key 表示 nums2 中的值
         // value 存储在 nums2 中，比 key 的值大的第一个值（index 要在 key 的值的后面）
         Map<Integer, Integer> map = new HashMap<>();
