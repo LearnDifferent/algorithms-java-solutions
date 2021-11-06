@@ -36,7 +36,18 @@ class Solution {
         }
 
         int left = 0;
-        int right = nums.length;
+        // 理论上应该在是 nums.length，但是这里向先左查询，所以可以忽略最后一个元素。
+        // 1. 比如 target 是 2，数组为 [1,2,2,2]，
+        // 因为是向左查询，所以最后一个位置会被直接忽视
+        // 2. 比如 target 是 3，数组为 [1,2,3]，只要数组前两个都不是 target，
+        // 那么就有可能是最后一个。这个算法在最后会检查其是否为 target（看下面）
+        // 3. 比如 target 是 4，数组为 [1,2,3]，
+        // 如果数组前两个都不对，那么第三个会进入 nums[right] == target ? right : -1 的检查，
+        // 因为最后会检查是否正确，所以最后一个可以忽略。
+        // 这里也可以写成 nums.length，不过会多循环一步，
+        // 而且因为最后停留的位置可能会是 nums.length，
+        // 所以需要判断一下 right(left) 是否为 nums.length，如果是，就超出了数组，需要返回 -1
+        int right = nums.length - 1;
 
         // 在 [left, right) 中循环，退出循环的条件是 left == right
         while (left < right) {
@@ -53,15 +64,6 @@ class Solution {
             }
         }
 
-        // 我们其实需要的是 mid，不过，在最后一次循环的时候，
-        // right 就等于了 mid，所以这里就用 right 作为结果即可
-        // （下面的代码，写 left 和 right 一样，因为退出循环的时候 left 等于 right）
-        if (right == nums.length) {
-            // 因为是在 [0, nums.length) 之间查询，所以不可能小于 0；
-            // 不过指针有可能刚好停到 nums.length 的位置，
-            // 所以做 nums.length 的边界判断
-            return -1;
-        }
         // 检查一下 target 是否存在于数组中，然后再返回
         return nums[right] == target ? right : -1;
     }
