@@ -6,32 +6,27 @@
  * 寻找右侧边界的二分搜索：
  * 和寻找左侧边界类似，寻找右侧边界，就是找到给定数值的 index（如果有多个，返回最右边的）。
  * <p>
- * 资料：https://labuladong.gitee.io/algo/2/21/55/
+ * 参考资料：
+ * https://segmentfault.com/a/1190000016825704
+ * https://labuladong.gitee.io/algo/2/21/55/
  */
 class Solution {
 
     public static void main(String[] args) {
         // 写个 main 方法测试一下
-        int[] nums = new int[]{1, 2, 2, 3, 5, 5, 6};
+        int[] nums = new int[]{1, 6};
 
         System.out.println("=========打印左侧边界搜索的结果=========");
-        int target = 5;
-        System.out.println(Solution.leftBoundNormal(nums, target));
-        System.out.println(Solution.leftBoundAnother(nums, target));
-        System.out.println("=======两个搜索的结果相等时表示正确=======");
+        int target = 6;
+        System.out.println(test.Solution.leftBoundNormal(nums, target));
         System.out.println("======================================");
         System.out.println("=========打印右侧边界搜索的结果=========");
-        System.out.println(Solution.rightBound(nums, target));
+        System.out.println(test.Solution.rightBound(nums, target));
         System.out.println("======================================");
     }
 
     /**
-     * 找寻左侧边界，就是找到 {@code target} 的 index，如果有多个，就返回最左边的那个。
-     * <p>
-     * 可以转化为，在 {@code nums} 数组（排序数组）中，找到小于 {@code target} 数值的数总共有多少个。
-     * 比如说，在 [1,2,2,3] 中，找到 3 的值的 index，就相当于统计比 3 小的有多少个，
-     * 这里的答案是有 3 个，分别为 1,2 和 2，而 3 的 index 就是 3，所以可以这样转化。
-     * 这样转化，可以方便理解代码中，将 right 赋值为 nums.length 的原因。
+     * 找寻左侧边界
      *
      * @param nums   an array of integers nums sorted in non-decreasing order
      * @param target target value
@@ -44,14 +39,21 @@ class Solution {
         }
 
         int left = 0;
-        // 这里使用 nums.length：
-        // 假设 target 是 nums 中最后一个元素，比如在 [1,2,3] 中，
-        // target 为 3 的话，返回的值就是 index 为 3，就是整个 nums 的长度 3，
-        // 也就是 nums.length。这样寻找边界的话，就会方便一点
-        int right = nums.length;
+        // 注意，这里按照 [left, right) 左闭右开区间的逻辑，
+        // 是要写成 nums.length，也就是形成 [0, nums.length) 的区间比较符合遍历的逻辑。
+        // 但是，假设 target 就是 nums.length - 1 位置的元素，因为这是**向左寻找**，
+        // 那么只要在 [0, nums.length - 1) 都找不到 target，所以就不用再向左寻找了，
+        // 这种情况下，target 要不就是 nums.length - 1，要不就不存在。
+        // 还有一种情况，假设在 [0, nums.length - 1) 中找到了 target，
+        // 比如数组为 [1,2,3,3,3]，target 为 3，那么它**向左寻找**，也和最后一个 3 没有关系
+        int right = nums.length - 1;
 
         // while (left < right) 表示在 [left, right) 左闭右开区间内循环搜索。
-        // 所以，当 left == right 的时候，会终止循环
+        // 当 left == right 的时候，会终止循环（此时 mid 也等于 left 和 right）。
+        // 终止循环之前，right 会被移动到 left 的位置（代码为 right = mid），
+        // 也就是说，在 [left, right) 中的最后一次循环之前，left 就是需要被找到的值，
+        // 此时，在最后一次循环退出之前，right 会被推动到 left 的位置，
+        // 形成 left、right 和 mid 处于相同位置的情况
         while (left < right) {
             int mid = left + (right - left) / 2;
             // 因为是 [left, right) 区间，所以检查过 mid 之后，就要去掉 mid，
@@ -64,54 +66,22 @@ class Solution {
                 right = mid;
             } else {
                 // if (nums[mid] == target) 的情况，说明找到了其中一个符合 target 的数值
-                // 因为是寻找左侧边界，所以要继续压缩左边的区域，也就是在 [left, mid) 中继续寻找
-                // 通过不断向左收缩，直到 left == right，
-                // 也就是从 left 向右搜索到的第一个符合 target 的值，
-                // 与 right 向左搜索到的最后一个符合 target 的值重合的地方，
-                // （因为是左闭右开）就是需要的左侧长度
+                // 因为是寻找左侧边界，所以要继续在 [left, mid) 中寻找
                 right = mid;
             }
         }
 
-        // 因为是在 left == right 的时候终止循环，所以下面的代码写 left 或 right 都是一样的
-        if (right == nums.length) {
-            // 如果在查找左侧边界的时候，指针停留在 nums.length
-            // 说明没有找到，直接返回 -1 即可（停留在 0 的时候，说明 index 为 0 的元素可能符合条件）
-            return -1;
-        }
+        // 补充一下：如果这里使用的不是 right = nums.length - 1，而是 nums.length
+        // 那么，right 或者说 left 是有可能停留在 nums.length 的位置上的，
+        // 那么在那种情况下，如果 right(left) 在 nums.length 上，就超过了数组，需要返回 -1
+
+        // 结束循环的时候，left、right 和 mid 都在同一个位置，所以下面的代码中写 left 和 right 都可以
         // 如果边界所在位置的不是 target 的话，也就是 nums 中不存在 target 这个值，就返回 -1
-        return nums[right] == target ? right : -1;
-    }
-
-    // 寻找左侧边界，另外一种不常用的方法
-    public static int leftBoundAnother(int[] nums, int target) {
-        int left = 0;
-        // 这里以 nums 数组的最后一个 index 为 right
-        int right = nums.length - 1;
-        // 因为 right 是 nums.length - 1，所以需要在 [left, right] 的闭合区间中循环
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] > target) {
-                // 在左侧的 [left, mid - 1] 中寻找（隔离了 mid）
-                right = mid - 1;
-            } else if (nums[mid] < target) {
-                left = mid + 1;
-            } else {
-                // 在左侧边界继续寻找
-                right = mid - 1;
-            }
-        }
-
-        // 下面的代码中，只能写 left，因为上面循环中的退出条件是 left == right + 1
-        if (left >= nums.length || nums[left] != target) {
-            // 当 target 比 nums 中所有元素都大时，就会发生越界
-            return -1;
-        }
-        return left;
+        return nums[left] == target ? left : -1;
     }
 
     /**
-     * 这里演示的是 right = nums.length 的方案，也就是在 [left, right) 中查找。
+     * 寻找右侧边界
      *
      * @param nums   排序数组
      * @param target 特定的数值
@@ -124,6 +94,8 @@ class Solution {
         }
 
         int left = 0;
+        // 这里是 nums.length，在 [0, nums.length) 的区间内，
+        // 循环查找 0 到 nums.length - 1 的数值是否符合条件
         int right = nums.length;
 
         // 在 [left, right) 区间内循环
@@ -149,6 +121,9 @@ class Solution {
         int targetIndex = left - 1;
         if (targetIndex < 0) {
             // 如果最后的结果不在数组的 index 范围内，说明不存在
+            // 补充一下：假设 left 或 right 停留在了 nums.length 上，
+            // 这里的 targetIndex 会 -1，所以就是 nums.length - 1，
+            // 还会在数组的范围内，所以不需要考虑那种情况
             return -1;
         }
         // 最后，要判断一下是否存在 target
