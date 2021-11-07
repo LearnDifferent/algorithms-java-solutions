@@ -93,9 +93,18 @@ class Solution {
             return -1;
         }
 
-        int left = 0;
-        // 这里是 nums.length，在 [0, nums.length) 的区间内，
-        // 循环查找 0 到 nums.length - 1 的数值是否符合条件
+        // 正常情况下，应该在 [0, nums.length)，
+        // 也就是从 0 到 nums.length - 1 循环查找。
+        // 但是对于右侧边界来说，index 为 0 的元素是可以忽略的。
+        // 比如数组为 [1,1,1,2,3]，target 为 1，
+        // 1. 如果在 [1, nums.length) 中，也就是 [1,1,2,3) 中找到了一个 1，
+        // 那么只会继续往右，寻找下一个 1，所以，最左边 index 为 0 的那个 1 可以忽略。
+        // 2. 如果上面的数组中， target 为 0，那么就有两种情况，
+        // 要么 target 在 index 为 0 的位置，要不整个数组中没有 target，
+        // 因为这个算法的最后：nums[targetIndex] == target ? targetIndex : -1;
+        // 会判断 target 是否存在于数组中，所以这两种情况在最后也会被考虑进去，
+        // 所以没必要去查看 index 为 0 的元素。
+        int left = 1;
         int right = nums.length;
 
         // 在 [left, right) 区间内循环
@@ -119,13 +128,13 @@ class Solution {
 
         // 下面的代码，left 或 right 都是一样的
         int targetIndex = left - 1;
-        if (targetIndex < 0) {
-            // 如果最后的结果不在数组的 index 范围内，说明不存在
-            // 补充一下：假设 left 或 right 停留在了 nums.length 上，
-            // 这里的 targetIndex 会 -1，所以就是 nums.length - 1，
-            // 还会在数组的范围内，所以不需要考虑那种情况
-            return -1;
-        }
+        // 补充，如果前面使用的是 left = 0; 的话，
+        // 必须加上：if (targetIndex < 0) return -1;
+        // 因为在 left = 0; 的情况下，最后停留的位置可能会是 0，
+        // 此时，如果结果再减一，就变为 -1 了，肯定不在数组范围，所以此时不存在。
+        // 假设最后停留在了 nums.length 上，-1 就是 nums.length - 1，
+        // 还会在数组的范围内，所以不需要考虑那种情况
+
         // 最后，要判断一下是否存在 target
         return nums[targetIndex] == target ? targetIndex : -1;
     }
