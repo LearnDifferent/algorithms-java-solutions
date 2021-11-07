@@ -1,17 +1,17 @@
 /**
  * 34. Find First and Last Position of Element in Sorted Array:
- *
+ * <p>
  * 在排序数组中查找元素的第一个和最后一个位置
- *
+ * <p>
  * 解决方案：寻找左侧边界和右侧边界的二分搜索
- *
+ * <p>
  * Given an array of integers nums sorted in non-decreasing order,
  * find the starting and ending position of a given target value.
- *
+ * <p>
  * If target is not found in the array, return [-1, -1].
- *
+ * <p>
  * You must write an algorithm with O(log n) runtime complexity.
- *
+ * <p>
  * 链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array
  */
 class Solution {
@@ -73,7 +73,9 @@ class Solution {
             return -1;
         }
 
-        int left = 0;
+        // 这里是右侧边界查找，所以 index 为 0 的元素可以忽略。
+        // 这里在 [1, nums.length) 区间内查找即可
+        int left = 1;
         int right = nums.length;
 
         while (left < right) {
@@ -93,13 +95,13 @@ class Solution {
         // 退出循环的时候，left == right，所以下面的代码写 left 和 right 都一样
         // 因为最后一次循环的时候，left = mid + 1，所以这里需要的 mid 实际上是 mid = left - 1
         int mid = left - 1;
-        if (mid < 0) {
-            // 因为指针是在 [0, nums.length) 中查找，而 mid = left - 1
-            // 如果最后的指针刚好停留在 0 的位置，那么 mid 就会为 -1，也就不在数组中了。
-            // 而停留在 nums.length 的时候，mid 就是 nums.length - 1，刚好在数组内。
-            // 所以，mid 有可能会小于 0，但是不会超出 nums.length
-            return -1;
-        }
+
+        // 补充：如果使用的是 left = 0; 就必须加上：if (mid < 0) return -1;
+        // 因为指针是在 [0, nums.length) 中查找，而 mid = left - 1
+        // 如果最后的指针刚好停留在 0 的位置，那么 mid 就会为 -1，也就不在数组中了。
+        // 而停留在 nums.length 的时候，mid 就是 nums.length - 1，刚好在数组内。
+        // 所以，mid 有可能会小于 0，但是不会超出 nums.length
+
         // 返回结果之前，判断一下 target 是否是数组中的一个数值
         return nums[mid] == target ? mid : -1;
     }
