@@ -31,8 +31,10 @@ class Solution {
 
         // 最高的载重，就是一次性运完所有的内容，也就是 weights 数组中所有元素的总和
         int max = getMax(weights);
-        // 这里使用 [left, right) 区间，所以需要 +1
-        int right = max + 1;
+        // 这里使用左侧边界搜索，区间为 [left, right)，理论上，应该是 [left, right + 1)，
+        // 才能完成从 left 到 right 的查找，但是因为 right 就是最高的载重，
+        // 肯定是能一次性运完的，所以可以当循环到了那个地方的时候，可以不用检验了。
+        int right = max;
 
         // 在 [left, right) 中循环
         while (left < right) {
