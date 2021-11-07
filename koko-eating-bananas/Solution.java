@@ -15,7 +15,7 @@
  *
  * Return the minimum integer k such that she can eat all the bananas within h hours.
  *
- * 解决方案：二分查找。比较的是，从最小的速度，到最大的速度，能够完全吃完香蕉的最低的速度。
+ * 解决方案：二分查找的左侧边界搜索。比较的是，从最小的速度，到最大的速度，能够完全吃完香蕉的最低的速度。
  * 所以，要按照速度从小到大，当作一个有序数组，使用二分搜索的左侧边界搜索，查找符合要求的最低速度。
  */
 class Solution {
@@ -27,8 +27,10 @@ class Solution {
 
         // 获取 piles 数组中，最大的元素，也就是最高的速度
         int maxInPiles = getMaxInPiles(piles);
-        // 这里使用 [left, right)，所以让最高速度 +1
-        int right = maxInPiles + 1;
+        // 这里使用左侧搜索，区间为 [left, right)
+        // 从逻辑上，这里应该是 [left, right + 1)，才能查找从 left 到 right 中的每一个。
+        // 但是，因为 right 就是最高的速度，肯定可以吃完香蕉，所以这种情况可以被忽略
+        int right = maxInPiles;
 
         // 在 [left, right) 中寻找，在 left == right 时，退出循环
         while (left < right) {
