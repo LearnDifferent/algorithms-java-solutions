@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
  * Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
  *
  * 链接：https://leetcode-cn.com/problems/lru-cache
+ * 资料：https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247486428&idx=1&sn=3611a14535669ba3372c73e24121247c&chksm=9bd7f5d4aca07cc28c02c3411d0633fc12c94c2555c08cbfaa2ccd50cc2d25160fb23bccce7f&scene=21#wechat_redirect
  */
 class LRUCache {
 
