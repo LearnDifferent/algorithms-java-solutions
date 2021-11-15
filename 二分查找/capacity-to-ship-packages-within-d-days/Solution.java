@@ -27,19 +27,18 @@ class Solution {
 
         // left 表示最小载重，即 weights 数组中最大的那个重量。
         // 因为如果小于最大的重量，最大的重量就因为超重而不能运了
-        int left = getMin(weights);
+        int left = getMaxWeight(weights);
 
-        // 最高的载重，就是一次性运完所有的内容，也就是 weights 数组中所有元素的总和
-        int max = getMax(weights);
+        // right 表示最高的载重，就是一次性运完所有的内容，也就是 weights 数组中所有元素的总和
         // 这里使用左侧边界搜索，区间为 [left, right)，理论上，应该是 [left, right + 1)，
         // 才能完成从 left 到 right 的查找，但是因为 right 就是最高的载重，
         // 肯定是能一次性运完的，所以可以当循环到了那个地方的时候，可以不用检验了。
-        int right = max;
+        int right = getTotalWeight(weights);
 
         // 在 [left, right) 中循环
         while (left < right) {
             int mid = left + (right - left) / 2;
-            boolean canFinish = canFinish(weights, mid, days);
+            boolean canFinish = canFinish(weights, days, mid);
             if (canFinish) {
                 // 继续向左寻找，看看有没有更小的载重：[left, mid)
                 right = mid;
@@ -52,7 +51,7 @@ class Solution {
         return left;
     }
 
-    private int getMin(int[] weights) {
+    private int getMaxWeight(int[] weights) {
         // 获取 weights 数组中最大的数
         int maxWeight = 0;
         for (int w : weights) {
@@ -63,7 +62,7 @@ class Solution {
         return maxWeight;
     }
 
-    private int getMax(int[] weights) {
+    private int getTotalWeight(int[] weights) {
         // 获取 weights 数组中，所有数的总和
         int sum = 0;
         for (int weight : weights) {
@@ -72,29 +71,37 @@ class Solution {
         return sum;
     }
 
-    private boolean canFinish(int[] weights, int capEveryDay, int withinDays) {
-        // index 是 weights 数组中的 index
-        int index = 0;
-
-        // 在规定的天数内遍历
-        for (int day = 1; day <= withinDays; day++) {
-            // leftCap 表示每天剩余的载重量
-            int leftCap = capEveryDay;
-            while ((leftCap -= weights[index]) >= 0) {
-                // 只要剩余的载重量 - 该 index 位置货物的重量 >= 0，
-                // 说明可以运送 index 位置的货物
-                // 将 index + 1，为下次运送做准备
-                index++;
-
-                if (index == weights.length) {
-                    // 如果运送完 weights 数组中的所有货物后，可以提前返回 true
-                    return true;
-                }
+    /**
+     * 能否在 {@code withinDays} 天数内，以 {@code weightPerDay} 的速度，
+     * 搬运完 {@code weights} 数组内，所有重量的物品
+     *
+     * @param weights      货物对应的重量
+     * @param withinDays   在这期间完成搬运
+     * @param weightPerDay 每天搬运的最大重量
+     * @return 能否在 {@code withinDays} 天数内，以 {@code weightPerDay} 的速度，
+     * 搬运完 {@code weights} 数组内，所有重量的物品
+     */
+    private boolean canFinish(int[] weights, int withinDays, int weightPerDay) {
+        // 消耗的天数
+        int spentDay = 0;
+        // 已经搬运了的货物的重量（每天结束后，会重新计算）
+        int transferredWeight = 0;
+        for (int weight : weights) {
+            if (transferredWeight + weight > weightPerDay) {
+                // 只要接下来需要搬运的重量 + 已经搬运的重量，大于每天最多的重量
+                // 那么，今天就已经搬运完成了，接下来的重量留到明天再搬运
+                spentDay++;
+                transferredWeight = weight;
+            } else {
+                // 否则，继续搬运今天的份
+                transferredWeight += weight;
             }
         }
-
-        // 如果在规定天数内没有完成，就返回 false
-        return false;
+		if (transferredWeight != 0) {
+			// 如果还有重量没运完，就再花 1 天把它运往
+			spentDay++;
+		}
+        // 只要消耗的天数，小于或等于规定的天数即可
+        return spentDay <= withinDays;
     }
-
 }
