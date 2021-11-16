@@ -84,22 +84,26 @@ class Solution {
         // 每个 nums 的子数组的总和，必须小于等于 maxEachSubarray
 
         // 统计至少可以分成几个子数组
-        int count = 1;
+        int count = 0;
         // 每个子数组的元素的总和
         int sumEachSubarray = 0;
 
         for (int num : nums) {
-            if (sumEachSubarray + num <= maxEachSubarray) {
-                // 如果加了当前的 num 之后，还符合最大的要求，就可以添加到总和中
-                sumEachSubarray += num;
-            } else {
+            if (sumEachSubarray + num > maxEachSubarray) {
                 // 如果加上当前的 num 会超过限制，就不要添加
                 // 让统计的子数组数量 +1
                 count++;
                 // 然后，将总和清零，然后加上当前的 num，表示进入了下一轮的统计
                 sumEachSubarray = num;
+            } else {
+                // 如果加了当前的 num 之后，还符合最大的要求，就可以添加到总和中
+                sumEachSubarray += num;
             }
         }
+		if (sumEachSubarray != 0) {
+			// 剩下的还能组成 1 个子数组
+			count++;
+		}
         // 返回统计结果
         return count;
     }
