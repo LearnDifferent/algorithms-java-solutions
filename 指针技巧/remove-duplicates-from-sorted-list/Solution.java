@@ -31,7 +31,7 @@ class Solution {
             fast = fast.next;
         }
 
-        // slow 后面的都是全部元素，所以要断开
+        // slow 后面可能还有冗余元素，所以要断开
         slow.next = null;
         return head;
     }
