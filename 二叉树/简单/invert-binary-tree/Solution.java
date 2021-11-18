@@ -9,6 +9,19 @@
  */
 class Solution {
 
+	// 两种思路都可以
+    // public TreeNode invertTree(TreeNode root) {
+    //     if (root == null) return null;
+
+    //     TreeNode invertedLeft = invertTree(root.left);
+    //     TreeNode invertedRight = invertTree(root.right);
+
+    //     root.left = invertedRight;
+    //     root.right = invertedLeft;
+
+    //     return root;
+    // }
+
     public TreeNode invertTree(TreeNode root) {
 
         if (root == null) {
