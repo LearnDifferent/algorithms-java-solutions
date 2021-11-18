@@ -14,9 +14,10 @@ import java.util.List;
 class Solution {
 
     public List<TreeNode> generateTrees(int n) {
-        if (n == 0) {
-            return new ArrayList<>();
-        }
+        // 题目中限制了 1 <= n <= 8，所以不需要判断 0 的情况
+//        if (n == 0) {
+//            return new ArrayList<>();
+//        }
         return generateTrees(1, n);
     }
 
