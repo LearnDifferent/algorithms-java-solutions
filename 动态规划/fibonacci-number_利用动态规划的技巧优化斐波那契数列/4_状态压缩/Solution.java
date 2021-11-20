@@ -8,18 +8,17 @@ class Solution {
             return n;
         }
 
-        // 现在从 n == 2 开始，前一个位置的 Fibonacci number 为 1
+		// f(1) = 1; f(2) = 1; 这里的 pre 表示 f(1)，cur 表示 f(2)
         int pre = 1;
-        // 当前位置的 Fibonacci number 为 1
         int cur = 1;
         
-        // 从 n 为 3 开始，一直遍历到 n
+		// 现在从获取 f(3) 开始，一直获取到 f(n)
         for (int i = 3; i < n + 1; i++) {
-            int sum = pre + cur;
-            pre = cur;
-            cur = sum;
+            int tmp = cur;
+            cur += pre;
+            pre = tmp;
         }
-        // 直到遍历到 n，结束循环
+		// 结束循环后返回
         return cur;
     }
 }
