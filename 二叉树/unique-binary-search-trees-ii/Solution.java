@@ -23,8 +23,10 @@ class Solution {
 
     private List<TreeNode> generateTrees(int start, int end) {
 
+		// 返回当前情况下的结果（每个情况都要新创建一个列表，不能共有同一个列表，要就无法分清）
         List<TreeNode> results = new ArrayList<>();
 
+		// 这里排除了 start > end，所以下面全部都是 start <= end，也就是 [start, end] 区间内
         if (start > end) {
             // 此时节点为 null，也属于一种 BST，所以存储进去
             results.add(null);
@@ -34,6 +36,9 @@ class Solution {
         // 从 start 开始到 end 结束，遍历所有可能的 root 节点的情况
         for (int rootValue = start; rootValue <= end; rootValue++) {
             // 递归以 rootValue 的值为 root 的左子树和右子树的情况
+			// 递归获取左子树和右子树的所有情况
+            // 因为是 BST，所以 root.left < root < root.right
+            // 所以左子树的情况要去左边获取 [start, i - 1]，右子树则去 [i + 1, end]
             List<TreeNode> leftResults = generateTrees(start, rootValue - 1);
             List<TreeNode> rightResults = generateTrees(rootValue + 1, end);
 
