@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -18,6 +20,8 @@ import java.util.Stack;
  * 需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。
  *
  * 注意：该题与 1081 https://leetcode-cn.com/problems/smallest-subsequence-of-distinct-characters 相同
+ *
+ * 解题思路的参考视频：https://www.bilibili.com/video/BV1Ay4y1E7fE?p=1
  *
  * 链接：https://leetcode-cn.com/problems/remove-duplicate-letters
  */
@@ -40,7 +44,7 @@ class Solution {
 
         char[] letters = s.toCharArray();
 
-        // countLetter 用于计算该位置的字符 出现的次数
+        // countLetter 表示该位置的字符，还剩余多少个
         // 比如，char a 转化为数字是 97，那么 countLetter[97] 中记录就要加一
         int[] countLetter = new int[256];
         for (char letter : letters) {
@@ -57,17 +61,16 @@ class Solution {
             // 所以，将 (char) letter 转化为 int 后，该位置的数量减少一
             countLetter[letter]--;
 
-            // 该 letter 是否已经在 stack 中
-            boolean letterNoInStack = !letterInStack[letter];
             // 如果该 letter 不在 stack 中，再进行下面的操作；否则略过此次循环
-            if (letterNoInStack) {
+            if (!letterInStack[letter]) {
                 // 在 stack 不为空，且……
                 // 当"当前"顶部的字母，在字典中大于当前循环到的这个字母，
                 // 比如字母 b > a 的时候，再进行循环操作
                 while (!stack.isEmpty() && stack.peek() > letter) {
                     if (countLetter[stack.peek()] == 0) {
-                        // 当前的 stack 刚刚判断过不为空，所以可以 peek 顶部元素
-                        // 如果大于当前字母的这个"栈顶的字母"，在后面已经不会再出现了，就退出循环
+                        // 当前的 stack 刚刚判断过不为空，所以可以 peek 顶部元素。
+                        // 如果大于当前字母的这个"栈顶的字母"，在后面已经不会再出现了，就退出循环。
+                        // 使用「== 0」来判断，是因为是字母从 countLetter 中拿出来，然后放入到 stack 中。
                         break;
                     }
                     // 弹出顶部的字母（顶部的字母比当前循环到的字母大）
@@ -89,8 +92,15 @@ class Solution {
             // 弹出最上面的字母，然后拼接为字符串
             Character poppedLetter = stack.pop();
             sb.append(poppedLetter);
+
+            // 如果使用的是 Deque，推荐使用 pollLast() 方法，
+            // 这样的话，最后一行 return 的代码就不用 reverse()
+//            sb.append(stack.pollLast());
         }
 
         return sb.reverse().toString();
+        // 如果使用了 Deque，且前面使用了 sb.append(stack.pollLast());
+        // 那么最后一个 return 就要这样写：
+//        return sb.toString();
     }
 }
