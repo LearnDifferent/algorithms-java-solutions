@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -34,7 +36,7 @@ class Solution {
 //        Stack<Integer> stack = new Stack<>();
 
         // Monotonic Stack，按照 index 从小到大，存储 num2 的 index
-        Deque<Integer> stack = new ArrayDeque<>()
+        Deque<Integer> stack = new ArrayDeque<>();
         // key 表示 nums2 中的值
         // value 存储在 nums2 中，比 key 的值大的第一个值（index 要在 key 的值的后面）
         Map<Integer, Integer> map = new HashMap<>();
@@ -46,11 +48,21 @@ class Solution {
                 // 弹出 stack 顶部的 index
                 Integer poppedIndex = stack.pop();
                 // key 记录顶部的 index 对应的值
-                // value 记录比顶部的 index 对应的值，还要大的，最近的一个 index 对应的值
+                // value 记录比顶部的 index 对应的值 还要大的 最近的一个 index 对应的值
                 map.put(nums2[poppedIndex], nums2[index]);
             }
             // 在 stack 中放入当前遍历到的 index
             stack.push(index);
+            /*
+            上面是使用 index 来存储，也可以直接使用值来存储：
+            for (int i = 0; i < nums2.length; i++) {
+                while (!stack.isEmpty() && stack.peek() < nums2[i]) {
+                    map.put(stack.pop(), nums2[i]);
+                }
+
+                stack.push(nums2[i]);
+            }
+             */
         }
 
         int[] ans = new int[nums1.length];
