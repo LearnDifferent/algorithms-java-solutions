@@ -1,18 +1,18 @@
-/**
- * 234. Palindrome Linked List:
- * 回文链表
- * 解决方案：1. 获取中间的节点 2. 反转从中间开始的节点 3. 用反转后的中间节点，和正常的节点相对比
- *
- * Given the head of a singly linked list, return true if it is a palindrome.
- *
- * 链接：https://leetcode-cn.com/problems/palindrome-linked-list/
+/*
+234. Palindrome Linked List:
+回文链表
+解决方案：1. 获取中间的节点 2. 反转从中间开始的节点 3. 用反转后的中间节点，和正常的节点相对比
+
+Given the head of a singly linked list, return true if it is a palindrome.
+
+链接：https://leetcode-cn.com/problems/palindrome-linked-list/
  */
 class Solution {
 
     public boolean isPalindrome(ListNode head) {
 
         // 获取中间的节点（如果是偶数，就是中间两个节点中，右边的那个）
-        ListNode middle = findMiddle(head);
+        ListNode middle = getMiddle(head);
 
         // 反转中间开始的节点，保存为 right
         ListNode right = reverse(middle);
@@ -60,7 +60,7 @@ class Solution {
 /**
  * Definition for singly-linked list.
  */
-public class ListNode {
+class ListNode {
 
     int val;
     ListNode next;
