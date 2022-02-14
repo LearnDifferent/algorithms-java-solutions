@@ -1,6 +1,6 @@
-/**
- * 1109. Corporate Flight Bookings / 航班预订统计
- * https://leetcode-cn.com/problems/corporate-flight-bookings/submissions/
+/*
+1109. Corporate Flight Bookings / 航班预订统计
+https://leetcode-cn.com/problems/corporate-flight-bookings
  */
 public class Solution {
 
@@ -19,9 +19,10 @@ public class Solution {
         int[] diff = new int[n];
 
         for (int[] b : bookings) {
-            // [left, right] 区间内每个元素 +val
+            // 因为 n 是从 1 开始的，所以换成 index 需要 -1
             int left = b[0] - 1;
             int right = b[1] - 1;
+            // [left, right] 区间内每个元素 +val
             int val = b[2];
             // 让 [left, ...] 全部 +val
             diff[left] += val;
