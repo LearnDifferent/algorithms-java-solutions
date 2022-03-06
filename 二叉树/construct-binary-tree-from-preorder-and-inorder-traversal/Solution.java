@@ -1,15 +1,15 @@
-/**
- * 105. Construct Binary Tree from Preorder and Inorder Traversal:
- *
- * 从前序与中序遍历序列构造二叉树:
- * 给定一棵树的前序遍历 preorder 与中序遍历  inorder。请构造二叉树并返回其根节点。
- *
- * 解决方案：根据前序与中序遍历的特性，递归构建
- *
- * Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder
- * is the inorder traversal of the same tree, construct and return the binary tree.
- *
- * 链接：https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+/*
+105. Construct Binary Tree from Preorder and Inorder Traversal:
+
+从前序与中序遍历序列构造二叉树:
+给定一棵树的前序遍历 preorder 与中序遍历  inorder。请构造二叉树并返回其根节点。
+
+解决方案：根据前序与中序遍历的特性，递归构建
+
+Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder
+is the inorder traversal of the same tree, construct and return the binary tree.
+
+链接：https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
  */
 class Solution {
 
@@ -69,7 +69,7 @@ class Solution {
 
         // 根据 root 的值，找到 inorder 数组中的 root 的 index
         int inorderRootIndex = -1;
-        for (int i = 0; i < inorder.length; i++) {
+        for (int i = inStart; i <= inEnd; i++)  {
             if (inorder[i] == rootValue) {
                 inorderRootIndex = i;
                 break;
