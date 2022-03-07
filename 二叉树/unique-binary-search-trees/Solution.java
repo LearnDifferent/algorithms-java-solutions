@@ -1,15 +1,15 @@
-/**
- * 96. Unique Binary Search Trees:
- *
- * 不同的二叉搜索树
- *
- * Given an integer n, return the number of structurally unique BST's (binary search trees)
- * which has exactly n nodes of unique values from 1 to n.
- *
- * 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？
- * 返回满足题意的二叉搜索树的种数。
- *
- * 链接：https://leetcode-cn.com/problems/unique-binary-search-trees
+/*
+96. Unique Binary Search Trees:
+
+不同的二叉搜索树
+
+Given an integer n, return the number of structurally unique BST's (binary search trees)
+which has exactly n nodes of unique values from 1 to n.
+
+给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？
+返回满足题意的二叉搜索树的种数。
+
+链接：https://leetcode-cn.com/problems/unique-binary-search-trees
  */
 class Solution {
 
@@ -27,12 +27,12 @@ class Solution {
      * @param start 起始的数值
      * @param end   结束的数值
      * @param memo  存入 [start][end] 出现的结果，以避免重复的情况
-     * @return 统计结果
+     * @return 在 [start, end] 内可以组成的 BST 的总数
      */
     int count(int start, int end, int[][] memo) {
         // base case
         if (start > end) {
-            // 比如，一开始是 start = 1; end = 0; 那么此时表示以数字 1 为节点
+            // 此时是 null 空节点，也属于一种情况
             return 1;
         }
 
