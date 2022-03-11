@@ -1,26 +1,26 @@
 import java.util.HashMap;
 
-/**
- * 146. LRU Cache:
- * LRU 缓存机制
- *
- * Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
- *
- * 链接：https://leetcode-cn.com/problems/lru-cache
+/*
+146. LRU Cache:
+LRU 缓存机制
+
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+链接：https://leetcode-cn.com/problems/lru-cache
  */
 class LRUCache {
 
     // key 是最近的 key
     // value 是最近的任务（key 和 value）
-    HashMap<Integer, Node> map;
+    private final HashMap<Integer, Node> map;
     // 最近任务的缓存
-    DoubleLinkedList cache;
+    private final DoubleLinkedList cache;
     // 缓存容量
-    int capacity;
+    private final int capacity;
 
     public LRUCache(int capacity) {
-        map = new HashMap<>();
-        cache = new DoubleLinkedList();
+        this.map = new HashMap<>();
+        this.cache = new DoubleLinkedList();
         this.capacity = capacity;
     }
 
@@ -66,9 +66,9 @@ class LRUCache {
 class DoubleLinkedList {
 
     // 头节点，不存数据。也就是说，第一个有数据的节点是 head.next，表示最近使用的数据
-    Node head;
+    private final Node head;
     // 尾节点，不存数据。也就是说，最后一个有数据的节点是 tail.prev，表示使用过的最久的数据
-    Node tail;
+    private final Node tail;
 
     public DoubleLinkedList() {
         // 初始化（key 和 value 随便一个数据即可，因为 head 和 tail 的数据会被忽略）
@@ -93,6 +93,10 @@ class DoubleLinkedList {
         node.next = head.next;
         // head <- node <-> head.next
         head.next.prev = node;
+        // 注意：上面的顺序可以打乱，
+        // 但是 head -> node 一定要放在最后，
+        // 因为 head 如果提前连接了 node，也就是 head.next 就变为了 node，
+        // 前面的 head.next.prev 和 "node.next = head.next" 就无法使用了
         // head <-> node <-> head.next
         head.next = node;
     }
@@ -120,10 +124,10 @@ class DoubleLinkedList {
 
 class Node {
 
-    public int key;
-    public int val;
-    public Node prev;
-    public Node next;
+    int key;
+    int val;
+    Node prev;
+    Node next;
 
     public Node(int key, int val) {
         this.key = key;
